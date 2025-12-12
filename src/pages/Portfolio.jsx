@@ -9,9 +9,11 @@ export default function Portfolio() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [typedText, setTypedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
+  const [snowflakes, setSnowflakes] = useState([]);
 
   const fullText = "Full-Stack Developer & AI Enthusiast";
 
+  
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
@@ -44,34 +46,38 @@ export default function Portfolio() {
     }
   }, [typedText, isTyping]);
 
-  // Programming Languages with Icons
+  // Updated Programming Languages with additional languages
   const programmingLanguages = [
     { name: 'HTML5', level: 90, color: 'from-orange-500 to-red-500', icon: <FileCode size={20} /> },
     { name: 'CSS3', level: 85, color: 'from-blue-500 to-cyan-500', icon: <Layout size={20} /> },
     { name: 'JavaScript', level: 80, color: 'from-yellow-500 to-orange-500', icon: <Code size={20} /> },
-    { name: 'C', level: 75, color: 'from-blue-600 to-blue-800', icon: <CpuIcon size={20} /> },
+    { name: 'Python', level: 75, color: 'from-blue-400 to-cyan-400', icon: <Brain size={20} /> },
     { name: 'Java', level: 70, color: 'from-red-600 to-orange-600', icon: <Coffee size={20} /> },
+    { name: 'C', level: 75, color: 'from-blue-600 to-blue-800', icon: <CpuIcon size={20} /> },
+    { name: 'PHP', level: 65, color: 'from-purple-500 to-indigo-500', icon: <Server size={20} /> },
     { name: 'Node.js', level: 78, color: 'from-green-500 to-emerald-500', icon: <Server size={20} /> }
   ];
 
-  // Tech Stack with Icons
+  // Updated Tech Stack with additional languages
   const techStack = {
-    frontend: [
+    'Programming Languages': [
+      { name: 'JavaScript', icon: <Code size={20} /> },
+      { name: 'Python', icon: <Brain size={20} /> },
+      { name: 'Java', icon: <Coffee size={20} /> },
+      { name: 'C', icon: <CpuIcon size={20} /> },
+      { name: 'PHP', icon: <Server size={20} /> }
+    ],
+    'Frontend': [
       { name: 'HTML5', icon: <FileCode size={20} /> },
       { name: 'CSS3', icon: <Layout size={20} /> },
-      { name: 'JavaScript', icon: <Code size={20} /> },
       { name: 'Tailwind CSS', icon: <Sparkles size={20} /> },
       { name: 'React', icon: <Cpu size={20} /> }
     ],
-    backend: [
+    'Backend & Tools': [
       { name: 'Node.js', icon: <Server size={20} /> },
       { name: 'Express.js', icon: <Zap size={20} /> },
-      { name: 'Postman', icon: <Send size={20} /> }
-    ],
-    tools: [
       { name: 'Git & GitHub', icon: <GitBranch size={20} /> },
       { name: 'Vercel', icon: <Cloud size={20} /> },
-      { name: 'Render', icon: <Zap size={20} /> },
       { name: 'VS Code', icon: <Monitor size={20} /> }
     ]
   };
@@ -140,12 +146,37 @@ export default function Portfolio() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  
+  // Snowflake component
+  const Snowflake = ({ flake }) => (
+    <div
+      className="absolute pointer-events-none z-0"
+      style={{
+        left: `${flake.x}vw`,
+        top: `${flake.y}vh`,
+        width: `${flake.size}px`,
+        height: `${flake.size}px`,
+        opacity: flake.opacity,
+        background: darkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.2)',
+        borderRadius: '50%',
+        filter: 'blur(0.5px)',
+        boxShadow: darkMode 
+          ? '0 0 10px rgba(255, 255, 255, 0.5)'
+          : '0 0 5px rgba(0, 0, 0, 0.2)',
+      }}
+    />
+  );
 
   return (
-    <div className={`min-h-screen transition-all duration-500 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={`min-h-screen transition-all duration-500 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'} overflow-hidden`}>
+      {/* Snow Effect */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {snowflakes.map(flake => (
+          <Snowflake key={flake.id} flake={flake} />
+        ))}
+      </div>
+
       {/* Background Effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         {/* Animated gradient orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -212,8 +243,8 @@ export default function Portfolio() {
 
       {/* Hero Section with Photo */}
       <section id="home" className="min-h-screen flex items-center justify-center px-6 pt-24 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 z-10">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center z-10">
+          <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30">
               <CheckCircle size={16} className="text-green-500" />
               <span className="text-sm font-medium">Open to Opportunities</span>
@@ -271,7 +302,7 @@ export default function Portfolio() {
           </div>
 
           {/* Photo Section */}
-          <div className="relative z-10">
+          <div className="relative">
             <div className="relative group">
               {/* Glowing background effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-3xl opacity-20 group-hover:opacity-30 transition-opacity" />
@@ -323,7 +354,7 @@ export default function Portfolio() {
         {/* Scroll Indicator */}
         <button 
           onClick={() => scrollToSection('skills')}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group z-10"
         >
           <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} group-hover:text-blue-500 transition-colors`}>
             Explore My Skills
@@ -333,7 +364,7 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-32 px-6 relative">
+      <section id="skills" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -358,9 +389,9 @@ export default function Portfolio() {
                     idx === 1 ? 'bg-gradient-to-br from-green-500 to-emerald-500' :
                     'bg-gradient-to-br from-purple-500 to-pink-500'
                   }`}>
-                    {idx === 0 ? <Layout size={28} className="text-white" /> :
-                     idx === 1 ? <Server size={28} className="text-white" /> :
-                     <Code size={28} className="text-white" />}
+                    {idx === 0 ? <Code size={28} className="text-white" /> :
+                     idx === 1 ? <Layout size={28} className="text-white" /> :
+                     <Server size={28} className="text-white" />}
                   </div>
                   <h3 className="text-2xl font-bold">{category}</h3>
                 </div>
@@ -381,7 +412,7 @@ export default function Portfolio() {
       </section>
 
       {/* Programming Languages Section */}
-      <section id="languages" className={`py-32 px-6 ${darkMode ? 'bg-gray-800/30' : 'bg-gray-100'}`}>
+      <section id="languages" className={`py-32 px-6 ${darkMode ? 'bg-gray-800/30' : 'bg-gray-100'} relative z-10`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -394,7 +425,7 @@ export default function Portfolio() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {programmingLanguages.map((lang, index) => (
               <div 
                 key={index}
@@ -434,7 +465,7 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-32 px-6">
+      <section id="projects" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -539,7 +570,7 @@ export default function Portfolio() {
       </section>
 
       {/* Certifications Section */}
-      <section id="certifications" className={`py-32 px-6 ${darkMode ? 'bg-gray-800/30' : 'bg-gray-100'}`}>
+      <section id="certifications" className={`py-32 px-6 ${darkMode ? 'bg-gray-800/30' : 'bg-gray-100'} relative z-10`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -589,7 +620,7 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-32 px-6">
+      <section id="contact" className="py-32 px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
@@ -633,7 +664,7 @@ export default function Portfolio() {
               <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Projects</div>
             </div>
             <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-              <div className="text-3xl font-bold text-green-500 mb-2">6</div>
+              <div className="text-3xl font-bold text-green-500 mb-2">8</div>
               <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Languages</div>
             </div>
             <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
@@ -649,7 +680,7 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t py-12`}>
+      <footer className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t py-12 relative z-10`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-4">
